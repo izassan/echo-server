@@ -38,9 +38,11 @@ func echoRequest(w http.ResponseWriter, r *http.Request){
     }
 
     // get request body
-    bodyBytes := make([]byte, rr.ContentLength)
-    r.Body.Read(bodyBytes)
-    rr.Body = string(bodyBytes)
+    if rr.ContentLength > 0 {
+        bodyBytes := make([]byte, rr.ContentLength)
+        r.Body.Read(bodyBytes)
+        rr.Body = string(bodyBytes)
+    }
 
     resp, err := json.Marshal(rr)
     if err != nil{
